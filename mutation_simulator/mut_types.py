@@ -10,3 +10,4 @@ class MutType(Enum):
 	IV = auto()
 	TL = auto()
 	TLI = auto()
+	MN = auto()

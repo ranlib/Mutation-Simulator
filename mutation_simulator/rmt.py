@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 	from pyfaidx import Fasta
 
-MUT_INDICATORS = set(["sn", "in", "de", "iv", "du", "tl"])
+MUT_INDICATORS = set(["sn", "in", "de", "iv", "du", "tl", "mn"])
 MAX_LENG_INDICATORS = set(
 		[f"{ind}max" for ind in MUT_INDICATORS if ind != "sn"])
 MIN_LENG_INDICATORS = set(
@@ -441,22 +441,25 @@ class SimulationSettings:
 		:raises TitvTooLowError: If the titv rate is too low
 		"""
 		mut_rates = {
-				MutType.SN: args.snp,
-				MutType.IN: args.insert,
-				MutType.DE: args.deletion,
-				MutType.IV: args.inversion,
-				MutType.DU: args.duplication,
-				MutType.TL: args.translocation
+			MutType.SN: args.snp,
+                        MutType.MN: args.mnp,
+			MutType.IN: args.insert,
+		        MutType.DE: args.deletion,
+			MutType.IV: args.inversion,
+		        MutType.DU: args.duplication,
+			MutType.TL: args.translocation
 		}
 		mut_lengs = {
-				"min": {
-				MutType.IN: args.insertminlength,
+			"min": {
+                                MutType.MN: args.mnpminlength,
+                        	MutType.IN: args.insertminlength,
 				MutType.DE: args.deletionminlength,
 				MutType.IV: args.inversionminlength,
 				MutType.DU: args.duplicationminlength,
 				MutType.TL: args.translocationminlength
 				},
-				"max": {
+			"max": {
+                                MutType.MN: args.mnpmaxlength,
 				MutType.IN: args.insertmaxlength,
 				MutType.DE: args.deletionmaxlength,
 				MutType.IV: args.inversionmaxlength,
@@ -465,12 +468,13 @@ class SimulationSettings:
 				}
 		}
 		mut_block = {
-				MutType.SN: args.snpblock,
-				MutType.IN: args.insertblock,
-				MutType.DE: args.deletionblock,
-				MutType.IV: args.inversionblock,
-				MutType.DU: args.duplicationblock,
-				MutType.TL: args.translocationblock
+			MutType.SN: args.snpblock,
+			MutType.IN: args.insertblock,
+			MutType.DE: args.deletionblock,
+			MutType.IV: args.inversionblock,
+		        MutType.DU: args.duplicationblock,
+		        MutType.TL: args.translocationblock,
+                        MutType.MN: args.mnpblock
 		}
 		sim = cls(MutationSettings(mut_rates, mut_lengs),
 				None, [],

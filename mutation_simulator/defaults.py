@@ -32,11 +32,12 @@ class Defaults:
 	IV_MAXLEN = 3
 
 	MUT_BLOCK = {
-			MutType.SN: BLOCK,
-			MutType.IN: BLOCK,
-			MutType.DE: BLOCK,
-			MutType.IV: BLOCK,
-			MutType.DU: BLOCK,
-			MutType.TL: BLOCK,
-			MutType.TLI: BLOCK,
+		MutType.SN: BLOCK,
+		MutType.MN: BLOCK,
+		MutType.IN: BLOCK,
+		MutType.DE: BLOCK,
+		MutType.IV: BLOCK,
+		MutType.DU: BLOCK,
+		MutType.TL: BLOCK,
+		MutType.TLI: BLOCK,
 	}
