@@ -1,5 +1,5 @@
 from __future__ import annotations
-
+import sys
 from argparse import ArgumentParser
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -17,14 +17,26 @@ def add_outfile_names(args: Namespace) -> Namespace:
     :return args: Commandline arguments with additions
     :note: Outbase will be modified
     """
-    try:
-        args.outbase = args.outbase.with_stem(args.outbase.stem + "_ms")
-    except ValueError:
-        args.outbase = args.outbase / (args.infile.stem + "_ms")
-    args.outfasta = args.outbase.with_suffix(args.infile.suffix)
-    args.outfastait = args.outfasta.with_stem(args.outfasta.stem + "_it")
-    args.outvcf = args.outfasta.with_suffix(".vcf")
-    args.outbedpe = args.outfastait.with_suffix(".bedpe")
+    # the following leads to problems when the outbasee has "." in the name!
+    # with_suffix "replaces" suffix, not alwasy adds suffix!
+    # try:
+    #     args.outbase = args.outbase.with_stem(args.outbase.stem + "_ms")
+    # except ValueError:
+    #     args.outbase = args.outbase / (args.infile.stem + "_ms")
+    # args.outfasta = args.outbase.with_suffix(args.infile.suffix)
+    # args.outfastait = args.outfasta.with_stem(args.outfasta.stem + "_it")
+    # args.outvcf = args.outfasta.with_suffix(".vcf")
+    # args.outbedpe = args.outfastait.with_suffix(".bedpe")
+
+    if args.outbase.parent.exists():
+        args.outfasta = Path( str(args.outbase) + "_ms" + str(args.infile.suffix) )
+        args.outvcf = args.outfasta.with_suffix(".vcf")
+
+        args.outfastait = Path( str(args.outbase) + "_it" + str(args.infile.suffix) )
+        args.outbedpe = args.outfastait.with_suffix(".bedpe")
+    else:
+        sys.exit(f"Directory {args.outbase.parent} in output basename does not exist, exiting!")
+        
     return args
 
 
@@ -44,6 +56,7 @@ def get_args() -> "Namespace":
         help="Path/Basename for the output files (without file extension)",
         default=Defaults.OUTBASE,
         dest="outbase",
+        required = True
     )
     parser.add_argument(
         "-w",
